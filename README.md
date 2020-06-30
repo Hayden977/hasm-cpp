@@ -63,6 +63,7 @@ If the silent flag is not set, the status of the HASM memory space is printed af
 By default, you can exit the HASM interpreter by typing `quit` at the prompt, or by pressing `^C`.
 
 ### Arguments
+
 | Argument | Effect                     | Exits? |
 | -------- | -------------------------- | ------ |
 | -h       | Displays a help message    | Y      |
