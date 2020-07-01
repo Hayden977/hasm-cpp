@@ -66,9 +66,16 @@ By default, you can exit the HASM interpreter by typing `quit` at the prompt, or
 
 | Argument | Effect                     | Exits? |
 | -------- | -------------------------- | ------ |
+| -c       | Sets the character flag    | n      |
 | -h       | Displays a help message    | Y      |
 | -s       | Sets the silent flag       | n      |
 | -v       | Displays a version message | Y      |
+
+#### Character Mode
+In character mode, the contents of the HASM memory space is shown as character.
+The character flag can be used in combination with the silent flag.
+Character mode is designed for showing string of text in the memory.
+The character flag allows programs involving "strings" to be used.
 
 #### Silent Mode
 In silent mode, the `[HASM]:` message is not shown.

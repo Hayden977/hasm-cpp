@@ -3,6 +3,8 @@
 
 // Switch for showing output of commands
 bool silent = false;
+// Switch for showing memory as characters
+bool chars = false;
 
 // Utility functions
 void print();
@@ -56,14 +58,20 @@ int main(int argc, char* argv[])
         for (int i = 1; i < argc; i++)
 	{
 	    std::string arg = argv[i];
+	    if (arg == "-c")
+	    {
+		chars = true;
+	    }
 	    if (arg == "-h")
 	    {
 	        // Display help message
 		return 0;
-	    } else if (arg == "-s")
+	    } else 
+	    if (arg == "-s")
 	    {
 	    	silent = true;
-	    } else if (arg == "-v")
+	    } else 
+            if (arg == "-v")
 	    {
 	    	// Display version message
 		std::cout << "HASM Version 1.0, 6/29/2020" << std::endl;
@@ -132,13 +140,24 @@ void print()
     std::cout << "Stack:  |";
     for (auto item : stack)
     {
-	std::cout << item << "|";
+	if (chars)
+	{
+	    std::cout << char(item) << "|";
+	} else
+	{
+	    std::cout << item << "|";
+	}
     }
-    std::cout << std::endl
-	      << "Memory: |";
+    std::cout << std::endl << "Memory: |";
     for (auto item : memory)
     {
-	std::cout << item << "|";
+	if (chars)
+	{
+    	    std::cout << char(item) << "|";
+	} else
+	{
+	    std::cout << item << "|";
+	}
     }
     std::cout << std::endl;
 }
