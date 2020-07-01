@@ -217,5 +217,5 @@ Again, contact me with any of the methods listed under [Contact](#contact).
 
 ## Contact
 Maintained by [Hayden977](https://github.com/hayden977).
-Twitter: [`@Hayden977_`](`https://twitter.com/Hayden977_`)
+Twitter: `@Hayden977_`
 Discord: Hayden977#9614
