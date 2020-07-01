@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 	    }
 	}
     }
-    while (input != "quit")
+    while (input != "quit" && input != "q")
     {	
 	if (!silent) { std::cout << "[HASM]: "; }
 	std::getline(std::cin, input);

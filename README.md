@@ -52,7 +52,7 @@ hasm
 
 
 ## Usage
-As of version 1.1 (6/30/2020), running `hasm` in the `bin` directory will result in the following output.
+As of version 1.1 (7/1/2020), running `hasm` in the `bin` directory will result in the following output.
 ```
 [HASM]:
 ```
@@ -60,7 +60,7 @@ This field accepts any valid instruction (see [Syntax](#syntax)), as well as the
 `Peek` is only active when the `silent` flag is set, using the argument `-s`. 
 Other command line arguments can be found in the [Arguments](#arguments) section.
 If the silent flag is not set, the status of the HASM memory space is printed after every command or instruction.
-By default, you can exit the HASM interpreter by typing `quit` at the prompt, or by pressing `^C`.
+By default, you can exit the HASM interpreter by typing `quit` or `q` at the prompt, or by pressing `^C`.
 
 ### Arguments
 
@@ -180,6 +180,7 @@ Example: `peek # Prints the contents of the memory and stack`
 
 
 #### quit
+Alias: `q`
 
 Exits the HASM interpreter.
 
