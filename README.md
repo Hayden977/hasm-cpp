@@ -29,7 +29,7 @@ The original (partly functional) project can be found on my [Gists](https://gist
 ### Building
 By default, HASM is built with g++ on all platforms.
 In the base directory, there are compilation scripts for Windows and Linux systems.
-Running the script for your platform will create the hasm executable in the `bin` directory.
+Running the script for your platform will create the `hasm` executable in the `bin` directory.
 For Linux systems, the compilation script will need to be made executable using `chmod`. 
 Example build and execution processes for both systems are shown below.
 
@@ -52,7 +52,7 @@ hasm
 
 
 ## Usage
-As of version 1.0 (6/30/2020), running `hasm` in the `bin` directory will result in the following output.
+As of version 1.1 (6/30/2020), running `hasm` in the `bin` directory will result in the following output.
 ```
 [HASM]:
 ```
@@ -75,11 +75,11 @@ In silent mode, the `[HASM]:` message is not shown.
 Additionally, the contents of the HASM memory space is hidden.
 The contents of the memory space can be accessed using the `peek` command.
 Silent mode is designed for minimalist users, or for users who are presenting their development.
-As of version 1.0, there is no way to toggle the silent flag within the interpreter.
+As of version 1.1, there is no way to toggle the silent flag within the interpreter.
 
 ### Syntax
 
-#### Mov
+#### mov
 Alias: `m`
 
 Usage: `mov SOURCE DESTINATION`
@@ -89,7 +89,7 @@ Additionally, zeros out the memory at the address SOURCE.
 
 Example: `mov 5 6 # Move the memory at 5 to the memory at 6`
 
-#### Psh
+#### psh
 Alias: `ps`
 
 Usage: `psh SOURCE`
@@ -101,7 +101,7 @@ Additionally, the `mem_out` flag is set.
 
 Example: `psh 3 # Pushes the memory at 3 onto the stack`
 
-#### Pop
+#### pop
 Alias: `pp`
 
 Usage: `pop DESTINATION`
@@ -113,7 +113,7 @@ Otherwise, the stack pointer is left untouched.
 
 Example: `pop 8 # Pops the value at the stack pointer to the memory at the address 8`
 
-#### Add
+#### add
 Alias: `a`
 
 Usage: `add SOURCE DESTINATION`
@@ -123,7 +123,7 @@ If the memory at the address DESTINATION is less than 0, the `neg` flag is set.
 
 Example: `add 9 5 # Adds the value at the address 9 to the value at the address 5`
 
-#### Sub
+#### sub
 Alias: `s`
 
 Usage: `sub SOURCE DESTINATION`
@@ -131,20 +131,38 @@ Usage: `sub SOURCE DESTINATION`
 Subtracts the contents of the memory at the address SOURCE from the contents of the memory at the address DESTINATION.
 If the memory at the address DESTINATION is less than 0, the `neg` flag is set.
 
-Example `sub 2 5 # Subtracts the value at the address 2 from the value at the address 5`
+Example: `sub 2 5 # Subtracts the value at the address 2 from the value at the address 5`
 
-#### Place
+#### inc
+Alias: `i`
+
+Usage: `inc DESTINATION`
+
+Increments the contents of the memory at the address DESTINATION by one.
+If the memory at the address DESTINATION is less than 0, the `neg` flag is set.
+
+Example: `inc 1 # Increments the value at the address 1 by one`
+
+#### dec
+Alias: `d`
+
+Usage: `dec DESTINATION`
+
+Decrements the contents of the memory at the address DESTINATION by one.
+If the memory at the address DESTINATION is less than 0, the `neg` flag is set.
+
+Example: `dec 1 # Decrements the value at the address 1 by one`
+#### place
 Alias: `p`
 
 Usage: `place VALUE DESTINATION`
 
 Places the integer representation of the VALUE parameter into the memory at the address DESTINATION.
 This is a interpreter only command, and is not part of the HASM instruction set.
-Without this command (as of version 1.0), all operation in the interpreter would be operating on zeros.
 
 Example: `place 65 1 # Places the value 65 at the address 1`
 
-#### Peek
+#### peek
 Alias: `pe`
 
 Prints the contents of the memory and the contents of the stack. 
@@ -154,7 +172,7 @@ In "normal" mode, the contents of the memory and the stack would be printed anyw
 Example: `peek # Prints the contents of the memory and stack`
 
 
-#### Quit
+#### quit
 
 Exits the HASM interpreter.
 
@@ -162,14 +180,14 @@ Example `quit # Exits the interpreter`
 
 ## Contributions
 As of June 2020, HASM is closed to outside contributions. 
-However, help is always appreciated, espectially on the following tasks.
+However, help is always appreciated, especially on the following tasks.
 
 
 ### TODO
 
 #### Instructions
-* `inc` Increment the value of a register by 1
-* `dec` Decrement the value of a register by 1
+* ~~`inc` Increment the value of a register by 1~~
+* ~~`dec` Decrement the value of a register by 1~~
 
 #### Interfacing
 As of right now there is no way for HASM to communicate with external processes.

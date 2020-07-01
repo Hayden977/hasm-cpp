@@ -41,6 +41,8 @@ void psh(ADDRESS s);
 void pop(ADDRESS d);
 void add(ADDRESS s, ADDRESS d);
 void sub(ADDRESS s, ADDRESS d);
+void inc(ADDRESS d);
+void dec(ADDRESS d);
 // void jmp(ADDRESS s);
 // void jmpz(ADDRESS s, ADDRESS d);
 // void jmpl(ADDRESS s, ADDRESS d);
@@ -78,36 +80,47 @@ int main(int argc, char* argv[])
 	{
 	    // mov address_from address_to
 	    mov(stoi(tokens[1]), stoi(tokens[2]));
-	}
+	} else
 	if (tokens[0] == "psh" || tokens[0] == "ps")
 	{
 	    // psh address_from
 	    psh(stoi(tokens[1]));
-	}
+	} else
 	if (tokens[0] == "pop" || tokens[0] == "pp")
 	{
 	    // pop address_to
 	    pop(stoi(tokens[1]));
-	}
+	} else
 	if (tokens[0] == "add" || tokens[0] == "a")
 	{
 	    // add address_from address_to
 	    add(stoi(tokens[1]), stoi(tokens[2]));
-	}
+	} else
 	if (tokens[0] == "sub" || tokens[0] == "s")
 	{
 	    // sub address_from address_to
 	    sub(stoi(tokens[1]), stoi(tokens[2]));
-	}
+	} else
+	if (tokens[0] == "inc" || tokens[0] == "i")
+	{
+	    // inc address_to
+	    inc(stoi(tokens[1]));
+	} else
+	if (tokens[0] == "dec" || tokens[0] == "d")
+	{
+	    // dec address_to
+	    dec(stoi(tokens[1]));
+	} else
 	if (tokens[0] == "place" || tokens[0] == "p")
 	{
 	    // place value address
 	    memory[stoi(tokens[2])] = stoi(tokens[1]);
-	}
+	} else
 	if (tokens[0] == "peek" || tokens[0] == "pe")
 	{
 	    if (silent) { print(); }
 	}
+
 	if (!silent) { print(); }
     }
     return 0;
@@ -192,6 +205,7 @@ void add(ADDRESS s, ADDRESS d)
     {
 	neg = true;
     }
+    return;
 }
 
 void sub(ADDRESS s, ADDRESS d)
@@ -201,4 +215,25 @@ void sub(ADDRESS s, ADDRESS d)
     {
 	neg = true;
     }
+    return;
+}
+
+void inc(ADDRESS d)
+{
+    memory[d] += 1;
+    if (memory[d] < 0)
+    {
+    	neg = true;
+    }
+    return;
+}
+
+void dec(ADDRESS d)
+{
+    memory[d] -= 1;
+    if (memory[d] < 0)
+    {
+    	neg = true;
+    }
+    return; 
 }
