@@ -1,22 +1,15 @@
 #include <iostream>
 #include <string>
 
-// Switch for showing output of commands
 bool silent = false;
-// Switch for showing memory as characters
 bool chars = false;
 
-// Utility functions
 void print();
-// https://stackoverflow.com/a/14267455
 void tokenize(std::string const &str, std::string &delim);
 
-// Line input
 std::string input;
 
-// Array of tokens
 std::string tokens[3];
-// Delimiter for tokens
 std::string delim = " ";
 
 typedef int ADDRESS;
@@ -86,42 +79,34 @@ int main(int argc, char* argv[])
 	tokenize(input, delim);
 	if (tokens[0] == "mov" || tokens[0] == "m")
 	{
-	    // mov address_from address_to
 	    mov(stoi(tokens[1]), stoi(tokens[2]));
 	} else
 	if (tokens[0] == "psh" || tokens[0] == "ps")
 	{
-	    // psh address_from
 	    psh(stoi(tokens[1]));
 	} else
 	if (tokens[0] == "pop" || tokens[0] == "pp")
 	{
-	    // pop address_to
 	    pop(stoi(tokens[1]));
 	} else
 	if (tokens[0] == "add" || tokens[0] == "a")
 	{
-	    // add address_from address_to
 	    add(stoi(tokens[1]), stoi(tokens[2]));
 	} else
 	if (tokens[0] == "sub" || tokens[0] == "s")
 	{
-	    // sub address_from address_to
 	    sub(stoi(tokens[1]), stoi(tokens[2]));
 	} else
 	if (tokens[0] == "inc" || tokens[0] == "i")
 	{
-	    // inc address_to
 	    inc(stoi(tokens[1]));
 	} else
 	if (tokens[0] == "dec" || tokens[0] == "d")
 	{
-	    // dec address_to
 	    dec(stoi(tokens[1]));
 	} else
 	if (tokens[0] == "place" || tokens[0] == "p")
 	{
-	    // place value address
 	    memory[stoi(tokens[2])] = stoi(tokens[1]);
 	} else
 	if (tokens[0] == "peek" || tokens[0] == "pe")
@@ -162,7 +147,6 @@ void print()
     std::cout << std::endl;
 }
 
-// https://stackoverflow.com/a/14267455
 void tokenize(std::string const &str, std::string &delim)
 {
     int i = 0;

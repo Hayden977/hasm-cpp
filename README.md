@@ -10,6 +10,7 @@
   * [Syntax](#syntax)
 * [Contributions](#contributons)
   * [TODO](#todo)
+* [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
 
 
@@ -197,7 +198,11 @@ However, help is always appreciated, especially on the following tasks.
 * ~~`inc` Increment the value of a register by 1~~
 * ~~`dec` Decrement the value of a register by 1~~
 
-#### Interfacing
+#### Interpreter Features
+* Possible C port?
+* Scanning and executing files on startup (command line argument)
+
+##### Interfacing
 As of right now there is no way for HASM to communicate with external processes.
 The long term vision of HASM is to implement the instructions on a physical device.
 This opens up the possibility for other devices to write to HASM's memory space.
@@ -214,6 +219,9 @@ Performance does not seem to be an issue (for example, low process time on all s
 However, this does not mean there is no room for improvement.
 Again, contact me with any of the methods listed under [Contact](#contact).
 
+
+## Acknowledgements
+* [StackOverflow](https://stackoverflow.com/a/14267455) for the `tokenize` function
 
 ## Contact
 Maintained by [Hayden977](https://github.com/hayden977).
