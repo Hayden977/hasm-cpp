@@ -206,10 +206,10 @@ The table below contains information about each flag.
 | 6       | `out`     | If the stack was full when a `psh` operation was attempted                               | Y        |
 | 7       | `used`    | If the `jmp` address was modified by a move operation                                    | Y        |
 
+
 ## Contributions
 As of June 2020, HASM is closed to outside contributions. 
 However, help is always appreciated, especially on the following tasks.
-
 
 ### TODO
 
