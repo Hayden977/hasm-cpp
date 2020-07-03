@@ -232,6 +232,12 @@ The `dev` command would open up a device sub-menu, which has a driver (written i
 These devices should be able to update on every instruction / cycle, which can be emulated with a `-d` flag.
 If anyone has ideas as to how I could implement this contact me with any of the methods listed under [Contact](#contact).
 
+##### Flagging Behaviors
+Within the coming updates there will be a new argument for handling the behavior of commands in the flag memory space.
+When a command is executed and if the supplied address(es) are within the flag memory, the command will operate differently.
+The range for the flag memory space can be found in [Flags and Registers](#flags-and-registers).
+When the argument is not supplied, the command behaves like it would regardless of if it is within the flag memory space.
+
 #### Code Cleanup
 From a personal standpoint, HASM has room for improvement in terms of being compliant with the C++ standards.
 Performance does not seem to be an issue (for example, low process time on all systems).
