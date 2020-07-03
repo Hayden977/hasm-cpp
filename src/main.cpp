@@ -14,22 +14,21 @@ std::string delim = " ";
 
 typedef int ADDRESS;
 
-ADDRESS mem_default = 0;
 int memory[32] = {0};
+// Jump register
+ADDRESS jmp      = 0;
+// Comparison flags   // Set if
+ADDRESS greater  = 1; // The last jump comparison resulted in greater than
+ADDRESS less     = 2; // The last jump comparison resulted in less than
+ADDRESS neg      = 3; // The last math operation resulted in a negative number
+ADDRESS zero     = 4; // The last jump comparison resulted in zero
+// Memory flags       // Set if
+ADDRESS mem_none = 5; // A move had no effect
+ADDRESS mem_out  = 6; // The stack is full
+ADDRESS mem_used = 7; // The jump address is being used
 
 ADDRESS stack_ptr = 16;
 int stack[16] = {0};
-
-// Jump and math flags
-// bool greater; // If the last jump comparison resulted in greater than
-// bool less;    // If the last jump comparison resulted in less than
-bool neg;     // If the last math operation would have resulted in a negative number
-// bool zero;    // If the last jump comparison resulted in zero
-
-// Memory control flags
-// bool mem_none; // If a move had no effect
-bool mem_out;  // If the stack is full
-// bool mem_used; // If the default memory value is being used
 
 void mov(ADDRESS s, ADDRESS d);
 void psh(ADDRESS s);
@@ -57,7 +56,6 @@ int main(int argc, char* argv[])
 	    }
 	    if (arg == "-h")
 	    {
-	        // Display help message
 		return 0;
 	    } else 
 	    if (arg == "-s")
@@ -66,7 +64,6 @@ int main(int argc, char* argv[])
 	    } else 
             if (arg == "-v")
 	    {
-	    	// Display version message
 		std::cout << "HASM Version 1.0, 6/29/2020" << std::endl;
 		return 0;
 	    }
@@ -75,8 +72,10 @@ int main(int argc, char* argv[])
     while (input != "quit" && input != "q")
     {	
 	if (!silent) { std::cout << "[HASM]: "; }
+
 	std::getline(std::cin, input);
 	tokenize(input, delim);
+
 	if (tokens[0] == "mov" || tokens[0] == "m")
 	{
 	    mov(stoi(tokens[1]), stoi(tokens[2]));
@@ -180,7 +179,7 @@ void psh(ADDRESS s)
     }
     else
     {
-	mem_out = true;
+	memory[mem_out] = 1;
 	stack_ptr++;
 	return;
     }
@@ -206,7 +205,7 @@ void add(ADDRESS s, ADDRESS d)
     memory[d] += memory[s];
     if (memory[d] < 0)
     {
-	neg = true;
+	memory[neg] = 1;
     }
     return;
 }
@@ -216,7 +215,7 @@ void sub(ADDRESS s, ADDRESS d)
     memory[d] -= memory[s];
     if (memory[d] < 0)
     {
-	neg = true;
+	memory[neg] = 1;
     }
     return;
 }
@@ -226,7 +225,7 @@ void inc(ADDRESS d)
     memory[d] += 1;
     if (memory[d] < 0)
     {
-    	neg = true;
+    	memory[neg] = 1;
     }
     return;
 }
@@ -236,7 +235,7 @@ void dec(ADDRESS d)
     memory[d] -= 1;
     if (memory[d] < 0)
     {
-    	neg = true;
+    	memory[neg] = 1;
     }
     return; 
 }

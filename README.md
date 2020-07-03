@@ -187,6 +187,24 @@ Exits the HASM interpreter.
 
 Example `quit # Exits the interpreter`
 
+### Memory Layout
+
+#### Flags and Registers
+All flags and registers are stored in the main memory area [0 - 31].
+The flags and registers can be read and written to with no protection.
+The table below contains information about each flag.
+
+| Address | Flag    | Usage                                                                                    | Boolean? |
+| ------- | ------- | ---------------------------------------------------------------------------------------- | -------- |
+| 0       | jmp     | Address for the next jump operation                                                      | n        |
+| 1       | greater | If the previous greater-than operation succeeded                                         | Y        |
+| 2       | less    | If the previous less-than operation succeeded                                            | Y        |
+| 3       | neg     | If the last math operation resulted in a negative number                                 | Y        |
+| 4       | zero    | If the last zero comparison operation resulted in true                                   | Y        |
+| 5       | none    | If the last move operation placed a zero at a location where there was previously a zero | Y        |
+| 6       | out     | If the stack was full when a psh operation was attempted                                 | Y        |
+| 7       | used    | If the jmp address was modified by a move operation                                      | Y        |
+
 ## Contributions
 As of June 2020, HASM is closed to outside contributions. 
 However, help is always appreciated, especially on the following tasks.
