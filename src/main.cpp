@@ -1,10 +1,12 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 bool silent = false;
 bool chars = false;
 
 void print();
+void readfile(std::string const &path);
 void tokenize(std::string const &str, std::string &delim);
 
 std::string input;
@@ -53,6 +55,10 @@ int main(int argc, char* argv[])
 	    if (arg == "-c")
 	    {
 		chars = true;
+	    } else
+	    if (arg == "-f")
+	    {
+		readfile(argv[++i]);
 	    }
 	    if (arg == "-h")
 	    {
@@ -144,6 +150,20 @@ void print()
 	}
     }
     std::cout << std::endl;
+}
+
+void readfile(std::string const &path)
+{
+    std::fstream in(path);
+    if (in.is_open())
+    {
+	std::string line;
+	while (getline(in, line))
+	{
+	    std::cout << line << std::endl;
+	}
+	in.close();
+    } 
 }
 
 void tokenize(std::string const &str, std::string &delim)
