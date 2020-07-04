@@ -2,35 +2,33 @@
 #include <fstream>
 #include <string>
 
-bool silent = false;
-bool chars = false;
+bool bSilent = false;
+bool bChars = false;
 
-void print();
-void readfile(std::string const &path);
-void tokenize(std::string const &str, std::string &delim);
+void vReadfile(std::string const &path);
+void vTokenize(std::string const &str, std::string &delim);
+void vProcess();
+void vPrint();
 
-std::string input;
+std::string sInput;
 
-std::string tokens[3];
-std::string delim = " ";
+std::string sTokens[3];
+std::string sDelim = " ";
 
 typedef int ADDRESS;
 
-int memory[32] = {0};
-// Jump register
+int nMemory[32] = {0};
 ADDRESS jmp      = 0;
-// Comparison flags   // Set if
-ADDRESS greater  = 1; // The last jump comparison resulted in greater than
-ADDRESS less     = 2; // The last jump comparison resulted in less than
-ADDRESS neg      = 3; // The last math operation resulted in a negative number
-ADDRESS zero     = 4; // The last jump comparison resulted in zero
-// Memory flags       // Set if
-ADDRESS mem_none = 5; // A move had no effect
-ADDRESS mem_out  = 6; // The stack is full
-ADDRESS mem_used = 7; // The jump address is being used
+ADDRESS greater  = 1; 
+ADDRESS less     = 2; 
+ADDRESS neg      = 3; 
+ADDRESS zero     = 4;
+ADDRESS mem_none = 5; 
+ADDRESS mem_out  = 6;
+ADDRESS mem_used = 7;
 
-ADDRESS stack_ptr = 16;
-int stack[16] = {0};
+ADDRESS nStack_ptr = 16;
+int nStack[16] = {0};
 
 void mov(ADDRESS s, ADDRESS d);
 void psh(ADDRESS s);
@@ -39,11 +37,6 @@ void add(ADDRESS s, ADDRESS d);
 void sub(ADDRESS s, ADDRESS d);
 void inc(ADDRESS d);
 void dec(ADDRESS d);
-// void jmp(ADDRESS s);
-// void jmpz(ADDRESS s, ADDRESS d);
-// void jmpl(ADDRESS s, ADDRESS d);
-// void jmpg(ADDRESS s, ADDRESS d);
-
 
 int main(int argc, char* argv[])
 {
@@ -51,167 +44,172 @@ int main(int argc, char* argv[])
     {
         for (int i = 1; i < argc; i++)
 	{
-	    std::string arg = argv[i];
-	    if (arg == "-c")
+	    std::string sArg = argv[i];
+	    if (sArg == "-c")
 	    {
-		chars = true;
+		bChars = true;
 	    } else
-	    if (arg == "-f")
+	    if (sArg == "-f")
 	    {
-		readfile(argv[++i]);
+		vReadfile(argv[++i]);
 	    }
-	    if (arg == "-h")
+	    if (sArg == "-h")
 	    {
 		return 0;
 	    } else 
-	    if (arg == "-s")
+	    if (sArg == "-s")
 	    {
-	    	silent = true;
+	    	bSilent = true;
 	    } else 
-            if (arg == "-v")
+            if (sArg == "-v")
 	    {
 		std::cout << "HASM Version 1.0, 6/29/2020" << std::endl;
 		return 0;
 	    }
 	}
     }
-    while (input != "quit" && input != "q")
+    while (sInput != "quit" && sInput != "q")
     {	
-	if (!silent) { std::cout << "[HASM]: "; }
+	if (!bSilent) { std::cout << "[HASM]: "; }
 
-	std::getline(std::cin, input);
-	tokenize(input, delim);
+	std::getline(std::cin, sInput);
+	vTokenize(sInput, sDelim);
 
-	if (tokens[0] == "mov" || tokens[0] == "m")
-	{
-	    mov(stoi(tokens[1]), stoi(tokens[2]));
-	} else
-	if (tokens[0] == "psh" || tokens[0] == "ps")
-	{
-	    psh(stoi(tokens[1]));
-	} else
-	if (tokens[0] == "pop" || tokens[0] == "pp")
-	{
-	    pop(stoi(tokens[1]));
-	} else
-	if (tokens[0] == "add" || tokens[0] == "a")
-	{
-	    add(stoi(tokens[1]), stoi(tokens[2]));
-	} else
-	if (tokens[0] == "sub" || tokens[0] == "s")
-	{
-	    sub(stoi(tokens[1]), stoi(tokens[2]));
-	} else
-	if (tokens[0] == "inc" || tokens[0] == "i")
-	{
-	    inc(stoi(tokens[1]));
-	} else
-	if (tokens[0] == "dec" || tokens[0] == "d")
-	{
-	    dec(stoi(tokens[1]));
-	} else
-	if (tokens[0] == "place" || tokens[0] == "p")
-	{
-	    memory[stoi(tokens[2])] = stoi(tokens[1]);
-	} else
-	if (tokens[0] == "peek" || tokens[0] == "pe")
-	{
-	    if (silent) { print(); }
-	}
+	vProcess();
 
-	if (!silent) { print(); }
+	if (!bSilent) { vPrint(); }
     }
     return 0;
 }
 
-void print()
+void vReadfile(std::string const &sPath)
 {
-    std::cout << "Stack*: " << stack_ptr << std::endl;
-    std::cout << "Stack:  |";
-    for (auto item : stack)
+    std::fstream fsIn(sPath);
+    if (fsIn.is_open())
     {
-	if (chars)
+	std::string sLine;
+	while (getline(fsIn, sLine))
 	{
-	    std::cout << char(item) << "|";
+	    std::cout << sLine << std::endl;
+	}
+	fsIn.close();
+    } 
+}
+
+void vTokenize(std::string const &sStr, std::string &sDelim)
+{
+    int nI = 0;
+    auto aStart = 0U;
+    auto aEnd = sStr.find(sDelim);
+    while (aEnd != std::string::npos)
+    {
+	std::string sCurrent = sStr.substr(aStart, aEnd - aStart);
+	sTokens[nI] = sCurrent;
+	nI++;
+	aStart = aEnd + sDelim.length();
+	aEnd = sStr.find(sDelim, aStart);
+    }
+    sTokens[nI] = sStr.substr(aStart, aEnd);
+}
+
+void vProcess()
+{
+	if (sTokens[0] == "mov" || sTokens[0] == "m")
+	{
+	    mov(stoi(sTokens[1]), stoi(sTokens[2]));
+	} else
+	if (sTokens[0] == "psh" || sTokens[0] == "ps")
+	{
+	    psh(stoi(sTokens[1]));
+	} else
+	if (sTokens[0] == "pop" || sTokens[0] == "pp")
+	{
+	    pop(stoi(sTokens[1]));
+	} else
+	if (sTokens[0] == "add" || sTokens[0] == "a")
+	{
+	    add(stoi(sTokens[1]), stoi(sTokens[2]));
+	} else
+	if (sTokens[0] == "sub" || sTokens[0] == "s")
+	{
+	    sub(stoi(sTokens[1]), stoi(sTokens[2]));
+	} else
+	if (sTokens[0] == "inc" || sTokens[0] == "i")
+	{
+	    inc(stoi(sTokens[1]));
+	} else
+	if (sTokens[0] == "dec" || sTokens[0] == "d")
+	{
+	    dec(stoi(sTokens[1]));
+	} else
+	if (sTokens[0] == "place" || sTokens[0] == "p")
+	{
+	    nMemory[stoi(sTokens[2])] = stoi(sTokens[1]);
+	} else
+	if (sTokens[0] == "peek" || sTokens[0] == "pe")
+	{
+	    if (bSilent) { vPrint(); }
+	}
+}
+
+void vPrint()
+{
+    std::cout << "Stack*: " << nStack_ptr << std::endl;
+    std::cout << "Stack:  |";
+    for (auto aItem : nStack)
+    {
+	if (bChars)
+	{
+	    std::cout << char(aItem) << "|";
 	} else
 	{
-	    std::cout << item << "|";
+	    std::cout << aItem << "|";
 	}
     }
     std::cout << std::endl << "Memory: |";
-    for (auto item : memory)
+    for (auto aItem : nMemory)
     {
-	if (chars)
+	if (bChars)
 	{
-    	    std::cout << char(item) << "|";
+    	    std::cout << char(aItem) << "|";
 	} else
 	{
-	    std::cout << item << "|";
+	    std::cout << aItem << "|";
 	}
     }
     std::cout << std::endl;
 }
 
-void readfile(std::string const &path)
-{
-    std::fstream in(path);
-    if (in.is_open())
-    {
-	std::string line;
-	while (getline(in, line))
-	{
-	    std::cout << line << std::endl;
-	}
-	in.close();
-    } 
-}
-
-void tokenize(std::string const &str, std::string &delim)
-{
-    int i = 0;
-    auto start = 0U;
-    auto end = str.find(delim);
-    while (end != std::string::npos)
-    {
-	std::string current = str.substr(start, end - start);
-	tokens[i] = current;
-	i++;
-	start = end + delim.length();
-	end = str.find(delim, start);
-    }
-    tokens[i] = str.substr(start, end);
-}
-
 void mov(ADDRESS s, ADDRESS d)
 {
-    memory[d] = memory[s];
-    memory[s] = 0;
+    nMemory[d] = nMemory[s];
+    nMemory[s] = 0;
     return;
 }
 
 void psh(ADDRESS s)
 {
-    stack_ptr--;
-    if (stack_ptr > 0)
+    nStack_ptr--;
+    if (nStack_ptr > 0)
     {
-	stack[stack_ptr] = memory[s];
+	nStack[nStack_ptr] = nMemory[s];
 	return;
     }
     else
     {
-	memory[mem_out] = 1;
-	stack_ptr++;
+	nMemory[mem_out] = 1;
+	nStack_ptr++;
 	return;
     }
 }
 
 void pop(ADDRESS d)
 {
-    memory[d] = stack[stack_ptr];
-    stack[stack_ptr] = 0;
-    if (stack_ptr < 16)
+    nMemory[d] = nStack[nStack_ptr];
+    nStack[nStack_ptr] = 0;
+    if (nStack_ptr < 16)
     {
-	stack_ptr++;
+	nStack_ptr++;
 	return;
     }
     else
@@ -222,40 +220,40 @@ void pop(ADDRESS d)
 
 void add(ADDRESS s, ADDRESS d)
 {
-    memory[d] += memory[s];
-    if (memory[d] < 0)
+    nMemory[d] += nMemory[s];
+    if (nMemory[d] < 0)
     {
-	memory[neg] = 1;
+	nMemory[neg] = 1;
     }
     return;
 }
 
 void sub(ADDRESS s, ADDRESS d)
 {
-    memory[d] -= memory[s];
-    if (memory[d] < 0)
+    nMemory[d] -= nMemory[s];
+    if (nMemory[d] < 0)
     {
-	memory[neg] = 1;
+	nMemory[neg] = 1;
     }
     return;
 }
 
 void inc(ADDRESS d)
 {
-    memory[d] += 1;
-    if (memory[d] < 0)
+    nMemory[d] += 1;
+    if (nMemory[d] < 0)
     {
-    	memory[neg] = 1;
+    	nMemory[neg] = 1;
     }
     return;
 }
 
 void dec(ADDRESS d)
 {
-    memory[d] -= 1;
-    if (memory[d] < 0)
+    nMemory[d] -= 1;
+    if (nMemory[d] < 0)
     {
-    	memory[neg] = 1;
+    	nMemory[neg] = 1;
     }
     return; 
 }
