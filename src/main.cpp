@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	    } else 
             if (sArg == "-v")
 	    {
-		std::cout << "HASM Version 1.0, 6/29/2020" << std::endl;
+		std::cout << "HASM Version 1.2, 7/5/2020" << std::endl;
 		return 0;
 	    }
 	}

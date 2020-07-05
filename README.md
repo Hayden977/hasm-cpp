@@ -54,7 +54,7 @@ hasm
 
 
 ## Usage
-As of version 1.1 (7/1/2020), running `hasm` in the `bin` directory will result in the following output.
+As of version 1.2 (7/5/2020), running `hasm` in the `bin` directory will result in the following output.
 ```
 [HASM]:
 ```
@@ -229,7 +229,7 @@ However, help is always appreciated, especially on the following tasks.
 
 #### Interpreter Features
 * Possible C port?
-* Scanning and executing files on startup (command line argument)
+* ~~Scanning and executing files on startup (command line argument)~~
 
 ##### Interfacing
 As of right now there is no way for HASM to communicate with external processes.
