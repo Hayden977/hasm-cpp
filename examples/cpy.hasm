@@ -1,0 +1,12 @@
+; Demonstration of copying memory values
+; Hayden977, 7/5/2020
+
+; To execute from the root directory, use the following line
+; ./bin/hasm -e ./examples/cpy.hasm
+
+; Place 65535 (largest 16-bit int) at 8
+p 65535 8
+; Push the value at 8 then pop to the address 9
+; This emulates a cpy instruction, since the value at 8 is left untouched
+ps 8
+pp 9

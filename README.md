@@ -66,18 +66,28 @@ By default, you can exit the HASM interpreter by typing `quit` or `q` at the pro
 
 ### Arguments
 
-| Argument | Effect                     | Exits? |
-| -------- | -------------------------- | ------ |
-| -c       | Sets the character flag    | n      |
-| -h       | Displays a help message    | Y      |
-| -s       | Sets the silent flag       | n      |
-| -v       | Displays a version message | Y      |
+| Argument | Effect                                 | Exits? |
+| -------- | -------------------------------------- | ------ |
+| -c       | Sets the character flag                | n      |
+| -e       | Executes the specified file at startup | n      |
+| -h       | Displays a help message                | Y      |
+| -s       | Sets the silent flag                   | n      |
+| -v       | Displays a version message             | Y      |
 
 #### Character Mode
 In character mode, the contents of the HASM memory space is shown as character.
 The character flag can be used in combination with the silent flag.
 Character mode is designed for showing string of text in the memory.
 The character flag allows programs involving "strings" to be used.
+
+#### Execute at Startup
+With version 1.2 (7/5/20), the HASM interpreter now has the ability to execute files at startup.
+To execute a file, start the interpreter with the `-e` flag. 
+Specify the path of the file to be read after the `-e` flag. 
+The contents of the file will be treated the same as many interpreter commands.
+Comments can be specified using the ';' symbol, or can be left in the file unaltered.
+However, using the ';' symbol will lead to the interpreter skipping the line, saving some performance.
+Multiple execute flags can be chained to read multiple files.
 
 #### Silent Mode
 In silent mode, the `[HASM]:` message is not shown.

@@ -1,0 +1,24 @@
+; Writing "Hello World" as characters in memory
+; Hayden977, 7/5/2020
+
+; To execute this file from the root directory, use the following command
+; ./bin/hasm -e ./examples/hello.hasm -c
+
+; Ascii character table: http://www.asciitable.com/
+
+; Hello
+p 72 8
+p 101 9
+p 108 10
+p 108 11
+p 111 12
+
+; (space)
+p 32 13
+
+; World
+p 87 14
+p 111 15
+p 114 16
+p 108 17
+p 100 18
