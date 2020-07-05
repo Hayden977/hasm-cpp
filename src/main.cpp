@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 	    {
 		bChars = true;
 	    } else
-	    if (sArg == "-f")
+	    if (sArg == "-e")
 	    {
 		vReadfile(argv[++i]);
 	    }
@@ -90,7 +90,11 @@ void vReadfile(std::string const &sPath)
 	std::string sLine;
 	while (getline(fsIn, sLine))
 	{
-	    std::cout << sLine << std::endl;
+	    if (char(sLine[0]) != ';')
+	    {
+	        vTokenize(sLine, sDelim);
+	        vProcess();
+	    }
 	}
 	fsIn.close();
     } 
