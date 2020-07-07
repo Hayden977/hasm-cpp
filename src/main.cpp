@@ -15,9 +15,12 @@ std::string sInput;
 std::string sTokens[3];
 std::string sDelim = " ";
 
+const int nMemorySize = 32;
+const int nStackSize = 16;
+
 typedef int ADDRESS;
 
-int nMemory[32] = {0};
+int nMemory[nMemorySize] = {0};
 ADDRESS jmp      = 0;
 ADDRESS greater  = 1; 
 ADDRESS less     = 2; 
@@ -27,8 +30,8 @@ ADDRESS mem_none = 5;
 ADDRESS mem_out  = 6;
 ADDRESS mem_used = 7;
 
-ADDRESS nStack_ptr = 16;
-int nStack[16] = {0};
+ADDRESS nStack_ptr = nStackSize;
+int nStack[nStackSize] = {0};
 
 void mov(ADDRESS s, ADDRESS d);
 void psh(ADDRESS s);
@@ -211,7 +214,7 @@ void pop(ADDRESS d)
 {
     nMemory[d] = nStack[nStack_ptr];
     nStack[nStack_ptr] = 0;
-    if (nStack_ptr < 16)
+    if (nStack_ptr < nStackSize)
     {
 	nStack_ptr++;
 	return;
