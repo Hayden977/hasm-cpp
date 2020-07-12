@@ -2,13 +2,19 @@
 #include <fstream>
 #include <string>
 
-bool bSilent = false;
-bool bChars = false;
+bool bChars     = false;
+bool bFlagShift = false;
+bool bLogFile   = false;
+bool bReadOnly  = false;
+bool bSilent    = false;
 
-void vReadfile(std::string const &path);
-void vTokenize(std::string const &str, std::string &delim);
+void vLog(std::string const &sPath, std::string const &sLine);
 void vProcess();
 void vPrint();
+void vReadFile(std::string const &sPath);
+void vTokenize(std::string const &s, std::string &sDelim);
+
+std::string sLogPath;
 
 std::string sInput;
 
@@ -54,12 +60,25 @@ int main(int argc, char* argv[])
 			} else
 			if (sArg == "-e")
 			{
-				vReadfile(argv[++i]);
-			}
+				vReadFile(argv[++i]);
+			} else
+			if (sArg == "-f")
+			{
+				bFlagShift = true;
+			} else
 			if (sArg == "-h")
 			{
 				return 0;
 			} else 
+			if (sArg == "-l")
+			{
+				bLogFile = true;
+				sLogPath = argv[++i];
+			} else
+			if (sArg == "-r")
+			{
+				bReadOnly = true;
+			} else
 			if (sArg == "-s")
 			{
 				bSilent = true;
@@ -71,11 +90,16 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-	while (sInput != "quit" && sInput != "q")
+	while (true)
 	{	
 		if (!bSilent) { std::cout << "[HASM]: "; }
 
 		std::getline(std::cin, sInput);
+		if (sInput == "quit" || sInput == "q") 
+		{
+			break;
+		}
+		if (bLogFile) { vLog(sLogPath, sInput); }
 		vTokenize(sInput, sDelim);
 		vProcess();
 
@@ -84,7 +108,17 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void vReadfile(std::string const &sPath)
+void vLog(std::string const &sPath, std::string const &sLine)
+{
+	std::fstream fsOut {sPath, std::ios_base::out | std::ios_base::app};
+	if (fsOut.is_open())
+	{
+		fsOut << sLine << std::endl;
+		fsOut.close();
+	}
+}
+
+void vReadFile(std::string const &sPath)
 {
 	std::fstream fsIn(sPath);
 	if (fsIn.is_open())
@@ -102,20 +136,20 @@ void vReadfile(std::string const &sPath)
 	} 
 }
 
-void vTokenize(std::string const &sStr, std::string &sDelim)
+void vTokenize(std::string const &s, std::string &sDelim)
 {
 	int nI = 0;
 	auto aStart = 0U;
-	auto aEnd = sStr.find(sDelim);
+	auto aEnd = s.find(sDelim);
 	while (aEnd != std::string::npos)
 	{
-		std::string sCurrent = sStr.substr(aStart, aEnd - aStart);
+		std::string sCurrent = s.substr(aStart, aEnd - aStart);
 		sTokens[nI] = sCurrent;
 		nI++;
 		aStart = aEnd + sDelim.length();
-		aEnd = sStr.find(sDelim, aStart);
+		aEnd = s.find(sDelim, aStart);
 	}
-	sTokens[nI] = sStr.substr(aStart, aEnd);
+	sTokens[nI] = s.substr(aStart, aEnd);
 }
 
 void vProcess()
