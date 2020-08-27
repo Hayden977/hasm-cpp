@@ -54,7 +54,7 @@ hasm
 
 
 ## Usage
-As of version 1.2 (7/5/2020), running `hasm` in the `bin` directory will result in the following output.
+As of version 1.3 (8/27/2020), running `hasm` in the `bin` directory will result in the following output.
 ```
 [HASM]:
 ```
@@ -69,8 +69,11 @@ By default, you can exit the HASM interpreter by typing `quit` or `q` at the pro
 | Argument | Effect                                 | Exits? |
 | -------- | -------------------------------------- | ------ |
 | -c       | Sets the character flag                | n      |
+| -d       | Treats the following `-e` as devices   | n      |
 | -e       | Executes the specified file at startup | n      |
+| -f       | Sets the flag shift flag (use with -e) | n      |
 | -h       | Displays a help message                | Y      |
+| -l       | Write commands to the specified file   | n      |
 | -s       | Sets the silent flag                   | n      |
 | -v       | Displays a version message             | Y      |
 
@@ -237,10 +240,11 @@ The long term vision of HASM is to implement the instructions on a physical devi
 This opens up the possibility for other devices to write to HASM's memory space.
 However as HASM is only in software, there is no way to do this.
 
-My ideal solution would be an external device system, accompanied with a command such as `dev`.
-The `dev` command would open up a device sub-menu, which has a driver (written in HASM) that writes to the memory.
-These devices should be able to update on every instruction / cycle, which can be emulated with a `-d` flag.
-If anyone has ideas as to how I could implement this contact me with any of the methods listed under [Contact](#contact).
+~~My ideal solution would be an external device system, accompanied with a command such as `dev`.~~
+~~The `dev` command would open up a device sub-menu, which has a driver (written in HASM) that writes to the memory.~~
+~~These devices should be able to update on every instruction / cycle, which can be emulated with a `-d` flag.~~
+~~If anyone has ideas as to how I could implement this contact me with any of the methods listed under [Contact](#contact).~~
+Update (8/27/2020): I have added the `-d` flag, which allows all following execute flags to be executed on every command.
 
 ##### Flagging Behaviors
 Within the coming updates there will be a new argument for handling the behavior of commands in the flag memory space.

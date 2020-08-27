@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 bool bChars     = false;
+bool bDevice    = false;
 bool bFlagShift = false;
 bool bLogFile   = false;
 bool bReadOnly  = false;
@@ -13,6 +15,7 @@ void vProcess();
 void vPrint();
 void vReadFile(std::string const &sPath);
 void vTokenize(std::string const &s, std::string &sDelim);
+void vUpdateDevices();
 
 std::string sLogPath;
 
@@ -20,6 +23,8 @@ std::string sInput;
 
 std::string sTokens[3];
 std::string sDelim = " ";
+
+std::vector<std::string> sDevices;
 
 const int nMemorySize = 32;
 const int nStackSize = 16;
@@ -58,9 +63,15 @@ int main(int argc, char* argv[])
 			{
 				bChars = true;
 			} else
+			if (sArg == "-d")
+			{
+				bDevice = true;
+			} else
 			if (sArg == "-e")
 			{
-				vReadFile(argv[++i]);
+				std::string sFilePath = argv[++i];
+				vReadFile(sFilePath);
+				if (bDevice) sDevices.push_back(sFilePath);
 			} else
 			if (sArg == "-f")
 			{
@@ -68,6 +79,14 @@ int main(int argc, char* argv[])
 			} else
 			if (sArg == "-h")
 			{
+				std::cout << "-c Displays the contents of memory as characters." << std::endl;
+				std::cout << "-d Allows all following execute flags to be treated as devices." << std::endl;
+				std::cout << "-e Executes the specified file at startup." << std::endl;
+				std::cout << "-f Allows instructions in flag memory to branch." << std::endl;
+				std::cout << "-h Displays this message." << std::endl;
+				std::cout << "-l Log commands to the specified file." << std::endl;
+				std::cout << "-s Hides the memory output after executing a command." << std::endl;
+				std::cout << "-v Displays a version message." << std::endl;
 				return 0;
 			} else 
 			if (sArg == "-l")
@@ -85,7 +104,7 @@ int main(int argc, char* argv[])
 			} else 
 			if (sArg == "-v")
 			{
-				std::cout << "HASM Version 1.2, 7/5/2020" << std::endl;
+				std::cout << "HASM Version 1.3, 8/27/2020." << std::endl;
 				return 0;
 			}
 		}
@@ -102,7 +121,7 @@ int main(int argc, char* argv[])
 		if (bLogFile) { vLog(sLogPath, sInput); }
 		vTokenize(sInput, sDelim);
 		vProcess();
-
+		vUpdateDevices();
 		if (!bSilent) { vPrint(); }
 	}
 	return 0;
@@ -218,6 +237,14 @@ void vPrint()
 		}
 	}
 	std::cout << std::endl;
+}
+
+void vUpdateDevices()
+{
+	for (std::string sDevicePath : sDevices)
+	{
+		vReadFile(sDevicePath);
+	} 
 }
 
 void mov(ADDRESS s, ADDRESS d)
